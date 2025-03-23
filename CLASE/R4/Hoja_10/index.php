@@ -59,11 +59,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             $errTipo = "Introduce un tipo";
         }
 
-        //CHECKBOX
-       
 
-        //SELECT
-       
 
 }
 

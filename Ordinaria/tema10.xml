@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<env:Envelope xmlns:env="http://www.w3.org/2003/05/soap-envelope"
+              xmlns:nsl="http://localhost/capi0/servidorsoapmate.php">
+  <env:Header/>
+  <env:Body>
+    <nsl:convertirMoneda>
+      <cantidad>100</cantidad>
+      <monedaOrigen>EUR</monedaOrigen>
+      <monedaDestino>USD</monedaDestino>
+    </nsl:convertirMoneda>
+  </env:Body>
+</env:Envelope>
+
+<types>
+  <xsd:schema targetNamespace="http://localhost/caplO/matewsdl.php">
+    <!-- Elemento que define la conversión de moneda -->
+    <xsd:element name="conversion">
+      <xsd:complexType>
+        <xsd:sequence>
+          <!-- Elemento que recibe el valor en euro -->
+          <xsd:element name="euro" type="xsd:float"/>
+          <!-- Elemento que recibe el valor en dollar -->
+          <xsd:element name="dollar" type="xsd:float"/>
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:element>
+
+    <!-- Elemento de respuesta con el resultado de la conversión -->
+    <xsd:element name="conversionResponse">
+      <xsd:complexType>
+        <xsd:sequence>
+          <!-- Resultado de la conversión, que puede ser en cualquier moneda -->
+          <xsd:element name="conversionResult" type="xsd:float"/>
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+</types>
+
+
+<message name="ConversionRequest">
+  <!-- Elemento de solicitud, que contiene los valores de euro y dollar -->
+  <part name="conversion" element="tns:conversion"/>
+</message>
+
+<message name="ConversionResponse">
+  <!-- Elemento de respuesta, que contiene el resultado de la conversión -->
+  <part name="conversionResult" element="tns:conversionResponse"/>
+</message>
+
+<portType name="MatePort">
+  <operation name="potencia">
+    <documentation>/**</documentation>
+    <input message="tns:potencialn"/>
+    <output message="tns:potenciaOut"/>
+  </operation>
+</portType>
+
+
+<binding name="MateBinding" type="tns:MatePort">
+  <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+  <operation name="potencia">
+    <soap:operation soapAction="http://localhost/caplO/matewsdl.php#potencia"/>
+    <input>
+      <soap:body use="literal"/>
+    </input>
+    <output>
+      <soap:body use="literal"/>
+    </output>
+  </operation>
+</binding>
+
+<service name="MateService">
+  <port name="MatePort" binding="tns:MateBinding">
+    <soap:address location="http://localhost/caplO/matewsdl.php"/>
+  </port>
+</service>
+
