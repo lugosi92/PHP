@@ -35,6 +35,7 @@ $claves = array_keys($supermercado);
 print_r($claves);
 
 
+
 // 4.
 
 $alumno = array(
